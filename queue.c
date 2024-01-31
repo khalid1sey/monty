@@ -8,29 +8,29 @@
 */
 void addqueue(stack_t **head, int n)
 {
-	stack_t *new_node, *aux;
+	stack_t *temp, *util;
 
-	aux = *head;
-	new_node = malloc(sizeof(stack_t));
-	if (new_node == NULL)
+	util = *head;
+	temp = malloc(sizeof(stack_t));
+	if (temp == NULL)
 	{
 		printf("Error\n");
 	}
-	new_node->n = n;
-	new_node->next = NULL;
-	if (aux)
+	temp->n = n;
+	temp->next = NULL;
+	if (util)
 	{
-		while (aux->next)
-			aux = aux->next;
+		while (util->next)
+			util = util->next;
 	}
-	if (!aux)
+	if (!util)
 	{
-		*head = new_node;
-		new_node->prev = NULL;
+		*head = temp;
+		temp->prev = NULL;
 	}
 	else
 	{
-		aux->next = new_node;
-		new_node->prev = aux;
+		util->next = temp;
+		temp->prev = util;
 	}
 }
