@@ -10,17 +10,30 @@
  */
 void push(stack_t **stack, unsigned int line_number)
 {
-	char *str = strtok(NULL, " \n");
-	int num;
+	char *arg = strtok(NULL, " \t\n");
+	int value;
 
-	if (str == NULL || !isdigit(*str))
+	if (arg == NULL || sscanf(arg, "%d", &value) != 1)
 	{
-		printf("L%d: usage: push integer\n", line_number);
+		fprintf(stderr, "L%d: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 
-	num = atoi(str);
-	push_stack(stack, num);
+	stack_t *new_node = malloc(sizeof(stack_t));
+	if (new_node == NULL)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+
+	new_node->n = value;
+	new_node->prev = NULL;
+	new_node->next = *stack;
+
+	if (*stack != NULL)
+		(*stack)->prev = new_node;
+
+	*stack = new_node;
 }
 
 /**
@@ -30,38 +43,11 @@ void push(stack_t **stack, unsigned int line_number)
  */
 void pall(stack_t **stack, unsigned int line_number)
 {
-	stack_t *curr = *stack;
+	stack_t *current = *stack;
 
-	(void)line_number;
-
-	while (curr != NULL)
+	while (current != NULL)
 	{
-		printf("%d\n", curr->n);
-		curr = curr->next;
+		printf("%d\n", current->n);
+		current = current->next;
 	}
-}
-
-/**
- * push_stack - pushes an element to the stack
- * @stack: double pointer to the head of the stack
- * @num: the integer to be pushed
- */
-void push_stack(stack_t **stack, int num)
-{
-	stack_t *new_node = malloc(sizeof(stack_t));
-
-	if (new_node == NULL)
-	{
-		printf("Error: malloc failed\n");
-		exit(EXIT_FAILURE);
-	}
-
-	new_node->n = num;
-	new_node->next = *stack;
-	new_node->prev = NULL;
-
-	if (*stack != NULL)
-		(*stack)->prev = new_node;
-
-	*stack = new_node;
 }

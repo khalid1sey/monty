@@ -31,4 +31,17 @@ typedef struct instruction_s
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+
+instruction_t instructions[] = {
+    {"push", push},
+    {"pall", pall},
+    {NULL, NULL}
+};
+
+
+stack_t *stack = NULL;
+void push(stack_t **stack, unsigned int line_no);
+void pall(stack_t **stack, unsigned int line_no);
+
+
 #endif
