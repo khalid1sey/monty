@@ -1,4 +1,5 @@
 
+<img src="![](img/images.jpeg)">
 
 The Monty Bytecode Interpreter is a project that involves creating an interpreter for Monty Bytecode files. Monty is a scripting language that operates on a unique stack and uses specific instructions to manipulate it. The goal of this project is to develop a program that can read Monty Bytecode files and execute the instructions contained within them.
 
