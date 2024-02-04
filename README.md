@@ -1,57 +1,121 @@
+# 0x19. C - Stacks, Queues - LIFO, FIFO
+**About:** In this project, we created a simple interpreter for Monty ByteCodes. The interpreter reads a bytecode file and executes the bytecode commands.
+### The Monty language
+Monty 0.98 is a scripting language that is first compiled into Monty byte codes (Just like Python). It relies on a unique stack, with specific instructions to manipulate it. 
 
-<img src="![](img/images.jpeg)">
+### Monty byte code files
+Files containing Monty byte codes usually have the .m extension. Most of the industry uses this standard but it is not required by the specification of the language. There is not more than one instruction per line. There can be any number of spaces before or after the opcode and its argument: [examples](#Examples)
 
-The Monty Bytecode Interpreter is a project that involves creating an interpreter for Monty Bytecode files. Monty is a scripting language that operates on a unique stack and uses specific instructions to manipulate it. The goal of this project is to develop a program that can read Monty Bytecode files and execute the instructions contained within them.
+## Objectives:
+* To know what LIFO and FIFO mean
+* To know what a stack is, and when to use it
+* To know what a queue is, and when to use it
+* To know the common implementations of stacks and queues
+* To know the most common use cases of stacks and queues
+* To know the proper way to use global variables
 
-The Monty Bytecode files have the extension ".m" and consist of a series of instructions, with one instruction per line. Each instruction consists of an opcode (the operation to be performed) and, in some cases, an argument. The opcode and its argument can have spaces before or after them.
+### Resource:
+* [Difference between Stack and Queue Data Structures](https://www.geeksforgeeks.org/difference-between-stack-and-queue-data-structures/) || 
 
-The Monty program is executed by providing the file containing the Monty Bytecode instructions as a command-line argument. For example, the command would be:
+## General Requirements
+* Allowed editors: **vi**, **vim**, **emacs**
+* All files is compiled on **Ubuntu 20.04 LTS using gcc**, using the options **-Wall -Werror -Wextra -pedantic -std=gnu89**
+* All files ends with a new line
+* There is **README.md** file at the root of the **alx-low_level_programming**
+* Maximum of one global variable is allowed
+* No more than 5 functions per file
+* The C standard library is allowed
+* The prototypes of all the functions were included in the header file called monty.h
+* All the header files are include guarded
 
+## Instruction given:
+* To use the following data structures for this project, and to also include them in the header file.
 ```
-$ monty file.m
+/**
+ * struct stack_s - doubly linked list representation of a stack (or queue)
+ * @n: integer
+ * @prev: points to the previous element of the stack (or queue)
+ * @next: points to the next element of the stack (or queue)
+ *
+ * Description: doubly linked list node structure
+ * for stack, queues, LIFO, FIFO
+ */
+typedef struct stack_s
+{
+        int n;
+        struct stack_s *prev;
+        struct stack_s *next;
+} stack_t;
+```
+```
+/**
+ * struct instruction_s - opcode and its function
+ * @opcode: the opcode
+ * @f: function to handle the opcode
+ *
+ * Description: opcode and its function
+ * for stack, queues, LIFO, FIFO
+ */
+typedef struct instruction_s
+{
+        char *opcode;
+        void (*f)(stack_t **stack, unsigned int line_number);
+} instruction_t;
 ```
 
-Here, "file.m" represents the path to the file containing the Monty Bytecode instructions.
+## List of files/Descriptions:
+| S/N   |   Files      		|      Description     |
+|:-----:|--------------------:|--------------------|
+|  1.   |                      |              |
+|  2.   |		|			|
+|  3.   |		|		|
+|  4.   |		|			|
+|  5.   |		|		|
 
-The Monty program follows certain conditions:
-- If the user does not provide a file or provides more than one argument, it will display an error message and exit.
-- If it is unable to open the file, it will display an error message and exit.
-- If the file contains an invalid instruction, it will display an error message indicating the line number and the unknown opcode.
-- The program executes the bytecodes line by line and stops if it completes all the instructions successfully or encounters an error.
-- If the program fails to allocate memory using `malloc`, it will display an error message and exit.
+## Compilation & Output
+* These codes were compiled using: ```gcc -Wall -Werror -Wextra -pedantic -std=c89 *.c -o monty```
+* Any output must be printed on ```stdout```
+* Any error message must be printed on ```stderr```
 
-The Monty Bytecode Interpreter should be implemented in the C programming language, following specific requirements and guidelines. It should include header files, use appropriate memory allocation techniques, and handle errors properly.
+## Examples
+```
+julien@ubuntu:~/monty$ cat -e bytecodes/000.m
+push 0$
+push 1$
+push 2$
+  push 3$
+                   pall    $
+push 4$
+    push 5    $
+      push    6        $
+pall$
+julien@ubuntu:~/monty$
+```
+Monty byte code files can contain blank lines (empty or made of spaces only, and any additional text after the opcode or its required argument is not taken into account:
+```
+julien@ubuntu:~/monty$ cat -e bytecodes/001.m
+push 0 Push 0 onto the stack$
+push 1 Push 1 onto the stack$
+$
+push 2$
+  push 3$
+                   pall    $
+$
+$
+                           $
+push 4$
+$
+    push 5    $
+      push    6        $
+$
+pall This is the end of our program. Monty is awesome!$
+julien@ubuntu:~/monty$
+```
+* Some examples of using monty and its console output.
 
+|                        Example #1                      |                    Example #2                   |                      Example #3                           |
+|:-------------------------------------------------------|:------------------------------------------------|:----------------------------------------------------------|
+| ~/monty$ `cat -e bytecodes/00.m` <br> push 1$ <br> push 2$ <br> push 3$ <br> pall$ <br> ~/monty$ `./monty bytecodes/00.m` <br> 3 <br> 2 <br> 1  | ~/monty$ `cat bytecodes/07.m`  <br> push 1 <br> push 2 <br> push 3 <br> pall <br> pop <br> pall <br> pop <br> pall <br> pop <br> pall <br>  ~/monty$ `./monty bytecodes/07.m`  <br> 3 <br> 2 <br> 1 <br> 2 <br> 1 <br> 1 | ~/monty$ `cat bytecodes/09.m` <br> push 1 <br> push 2 <br> push 3 <br> pall <br> swap <br> pall <br> ~/monty$ `./monty bytecodes/09.m` <br> 3 <br> 2 <br> 1 <br> 2 <br> 3 <br> 1 |
 
-| # | Opcode/Program | Description | Usage | Example |
-| --- | --- | --- | --- | --- |
-| 1 | push | The push opcode pushes an element to the stack. | push <int> | push 1 |
-| 2 | pall | The pall opcode prints all the values on the stack, starting from the top. | pall | pall |
-| 3 | pint | The pint opcode prints the value at the top of the stack. | pint | pint |
-| 4 | pop | The pop opcode removes the top element of the stack. | pop | pop |
-| 5 | swap | The swap opcode swaps the top two elements of the stack. | swap | swap |
-| 6 | add | The add opcode adds the top two elements of the stack. | add | add |
-| 7 | nop | The nop opcode does nothing. | nop | nop |
-| 8 | sub | The sub opcode subtracts the top two elements of the stack. | sub | sub |
-| 9 | div | The div opcode divides the second top element by the top element of the stack. | div | div |
-| 10 | mul | The mul opcode multiplies the second top element by the top element of the stack. | mul | mul |
-| 11 | mod | The mod opcode computes the modulo of the second top element divided by the top element of the stack. | mod | mod |
-| 12 | comments | The comments feature allows adding comments in the Monty bytecode file. | # This is a comment | # This is a comment |
-| 13 | pchar | The pchar opcode prints the character at the top of the stack. | pchar | pchar |
-| 14 | pstr | The pstr opcode prints the string starting at the top of the stack. | pstr | pstr |
-| 15 | rotl | The rotl opcode rotates the stack to the top. | rotl | rotl |
-| 16 | rotr | The rotr opcode rotates the stack to the bottom. | rotr | rotr |
-| 17 | stack | The stack opcode sets the format of the data to a stack (LIFO). | stack | stack |
-| 18 | queue | The queue opcode sets the format of the data to a queue (FIFO). | queue | queue |
-| 19 | Brainf*ck | Implements a Brainf*ck program. | bf <file> | bf brainf*ck_program.bf |
-| 20 | Add two digits | Implements a program to add two digits. | add_two_digits | add_two_digits |
-| 21 | Multiplication | Implements a program to multiply two digits. | multiply_digits | multiply_digits |
-| 22 | Multiplication level up | Implements an advanced multiplication program. | multiply_advanced | multiply_advanced |
-
-
-# Opcode(operation code)
-* opcode is fundemental concept in computer archtechure and programming. it refers to a numeric code that represents a specfic operation or instruction that a computer's cpu can execute.
-
-* An opcode is part of the machine language instruction format, which is the lowest level of programming language understood by a computer. Each opcode corresponds to a particular operation, such as arithmetic operations (addition, subtraction, etc.), logical operations (AND, OR, NOT), data movement (load, store), branching (jump, conditional jump), and more.
-
-* In a typical computer architecture, an instruction consists of an opcode followed by operands, which are the data or addresses on which the operation acts. The CPU fetches an instruction from memory, interprets the opcode, and performs the specified operation using the provided operands.
+## Authors/Collaborators
+[Okpara Onyedikachi](https://github.com/Dikachis/monty/) || [Duff Iniobong](https://github.com/Duffigoogle/monty/)
